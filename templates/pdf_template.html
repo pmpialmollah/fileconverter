@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>{{ title }}</title>
+<style>
+    /* ==========================================================
+       IELTS CHEAT SHEET — PRINT STYLESHEET
+       Bilingual (English + বাংলা) typography engine for WeasyPrint
+       ========================================================== */
+
+    /* ---- Font registration ---------------------------------- */
+    /* Local static-instance fonts are bundled in /fonts so rendering
+       is 100% reproducible regardless of the host OS's installed fonts.
+       System fallbacks are still listed after them for users who open
+       the raw HTML in a browser instead of through WeasyPrint. */
+
+    @font-face {
+        font-family: 'Noto Sans';
+        src: url('file://{{ fonts_dir }}/NotoSans-Static-Regular.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Noto Sans';
+        src: url('file://{{ fonts_dir }}/NotoSans-Static-Bold.ttf') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Noto Sans Bengali';
+        src: url('file://{{ fonts_dir }}/NotoSansBengali-Static-Regular.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Noto Sans Bengali';
+        src: url('file://{{ fonts_dir }}/NotoSansBengali-Static-Bold.ttf') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+    }
+    /* Optional: if the user has bundled Kalpurush / SolaimanLipi under
+       /fonts, uncomment and point to them for a more "traditional"
+       Bengali print look. Both are freeware fonts widely used in
+       Bangladeshi print/desktop publishing. Place the .ttf files in
+       the fonts/ directory with these exact names, or edit the paths. */
+    /*
+    @font-face {
+        font-family: 'Kalpurush';
+        src: url('file://{{ fonts_dir }}/Kalpurush.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'SolaimanLipi';
+        src: url('file://{{ fonts_dir }}/SolaimanLipi.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+    }
+    */
+
+    /* ---- Page setup ------------------------------------------ */
+    @page {
+        size: A4;
+        margin: 16mm 14mm 18mm 14mm;
+
+        @bottom-center {
+            content: "Page " counter(page) " of " counter(pages);
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 8.5pt;
+            color: #94a3b8;
+        }
+        @top-right {
+            content: "IELTS Study Sheet";
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 8pt;
+            color: #cbd5e1;
+        }
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        /* Bengali family listed alongside Latin so mixed-script runs
+           (English word + বাংলা meaning in the same line) both resolve
+           without falling back to a missing-glyph box. */
+        font-family: 'Noto Sans', 'Noto Sans Bengali',
+                     'Kalpurush', 'SolaimanLipi', 'Noto Sans Bengali UI',
+                     sans-serif;
+        font-size: 10.5pt;
+        line-height: 1.65;
+        color: #1e293b;
+        -weasy-text-rendering: optimizeLegibility;
+    }
+
+    /* Ensure any element can independently fall back to Bengali glyphs
+       even if a parent explicitly set a Latin-only font-family. */
+    :lang(bn) {
+        font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', sans-serif;
+    }
+
+    /* ---- Header / document title ------------------------------ */
+    .doc-header {
+        border-bottom: 3px solid #2563eb;
+        padding-bottom: 10px;
+        margin-bottom: 18px;
+    }
+    .doc-header h1 {
+        margin: 0 0 4px 0;
+    }
+    .doc-header .meta {
+        font-size: 8.5pt;
+        color: #64748b;
+    }
+    .doc-header .badge {
+        display: inline-block;
+        background: #2563eb;
+        color: #ffffff;
+        font-size: 8pt;
+        font-weight: 700;
+        padding: 2px 9px;
+        border-radius: 10px;
+        letter-spacing: 0.03em;
+        margin-right: 6px;
+    }
+
+    /* ---- Headings ---------------------------------------------- */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Noto Sans', 'Noto Sans Bengali', sans-serif;
+        font-weight: 700;
+        color: #0f172a;
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+    h1 { font-size: 19pt; margin: 0 0 10px 0; }
+    h2 {
+        font-size: 14pt;
+        margin: 20px 0 10px 0;
+        padding-bottom: 4px;
+        border-bottom: 1.5px solid #e2e8f0;
+        color: #1d4ed8;
+        page-break-before: auto;
+    }
+    h3 {
+        font-size: 12pt;
+        margin: 14px 0 6px 0;
+        color: #334155;
+    }
+    h4, h5, h6 {
+        font-size: 10.5pt;
+        margin: 10px 0 4px 0;
+        color: #475569;
+    }
+
+    p { margin: 0 0 8px 0; orphans: 3; widows: 3; }
+
+    strong { font-weight: 700; color: #0f172a; }
+    em { font-style: italic; }
+
+    a { color: #2563eb; text-decoration: none; }
+
+    hr {
+        border: none;
+        border-top: 1px solid #e2e8f0;
+        margin: 16px 0;
+    }
+
+    /* ---- Lists --------------------------------------------------- */
+    ul, ol {
+        margin: 6px 0 10px 0;
+        padding-left: 20px;
+    }
+    li { margin-bottom: 4px; }
+    li > ul, li > ol { margin-top: 4px; }
+
+    /* ---- Vocabulary / grammar callout boxes ----------------------- */
+    /* Convention: a blockquote starting with **Note:**, **Tip:**, or
+       **Grammar:** is auto-styled as a callout by class below; the
+       frontend / authoring convention can also wrap content in
+       <div class="callout vocab"> ... </div> directly in the markdown
+       via raw HTML, since Python-Markdown passes raw HTML through. */
+    blockquote {
+        margin: 10px 0;
+        padding: 8px 14px;
+        background: #f8fafc;
+        border-left: 4px solid #94a3b8;
+        color: #334155;
+        font-size: 10pt;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .callout {
+        margin: 10px 0;
+        padding: 10px 14px;
+        border-radius: 4px;
+        border-left: 4px solid #2563eb;
+        background: #eff6ff;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        font-size: 10pt;
+    }
+    .callout.vocab   { border-left-color: #2563eb; background: #eff6ff; }
+    .callout.grammar { border-left-color: #7c3aed; background: #f5f3ff; }
+    .callout.tip     { border-left-color: #059669; background: #ecfdf5; }
+    .callout.warning { border-left-color: #d97706; background: #fffbeb; }
+    .callout .callout-label {
+        display: block;
+        font-weight: 700;
+        font-size: 8.5pt;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 3px;
+        color: #1d4ed8;
+    }
+    .callout.grammar .callout-label { color: #6d28d9; }
+    .callout.tip .callout-label     { color: #047857; }
+    .callout.warning .callout-label { color: #b45309; }
+
+    /* ---- Tables (vocabulary tables, comparison tables) ------------ */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0 14px 0;
+        font-size: 9.5pt;
+        page-break-inside: auto;
+    }
+    table thead {
+        display: table-header-group; /* repeat header across page breaks */
+    }
+    tr { page-break-inside: avoid; break-inside: avoid; }
+    th, td {
+        border: 1px solid #e2e8f0;
+        padding: 6px 9px;
+        text-align: left;
+        vertical-align: top;
+    }
+    th {
+        background: #1e293b;
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 9pt;
+    }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+
+    /* ---- Code blocks (rare in IELTS sheets, but supported) --------- */
+    code {
+        font-family: 'DejaVu Sans Mono', 'Courier New', monospace;
+        background: #f1f5f9;
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-size: 9pt;
+        color: #be123c;
+    }
+    pre {
+        background: #0f172a;
+        color: #e2e8f0;
+        padding: 10px 12px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-size: 8.5pt;
+        page-break-inside: avoid;
+    }
+    pre code { background: none; color: inherit; padding: 0; }
+
+    /* ---- Two-column compact layout for dense vocab lists ----------- */
+    /* Wrap a markdown section in <div class="two-col"> ... </div>
+       (raw HTML is passed through) to get a compact multi-column
+       layout ideal for long vocabulary lists / synonym banks. */
+    .two-col {
+        column-count: 2;
+        column-gap: 22px;
+        column-rule: 1px solid #e2e8f0;
+    }
+    .two-col > * { break-inside: avoid; }
+
+    /* ---- Vocabulary entry pattern -----------------------------------
+       Recommended authoring convention for vocab entries:
+         **Word** (pos.) — বাংলা অর্থ
+         Synonyms: a, b, c
+         Example: ... — ...
+       This renders cleanly with the spacing rules above without any
+       special markup required. */
+    .vocab-entry {
+        margin: 0 0 10px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px dashed #e2e8f0;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+    .vocab-entry .word { font-weight: 700; font-size: 11pt; color: #0f172a; }
+    .vocab-entry .pos { font-style: italic; color: #64748b; font-size: 9pt; }
+    .vocab-entry .bn-meaning { font-size: 10.5pt; color: #1e293b; }
+    .vocab-entry .synonyms { font-size: 9pt; color: #475569; margin-top: 2px; }
+    .vocab-entry .example { font-size: 9.5pt; color: #334155; margin-top: 2px; }
+
+    /* ---- Page break controls ---------------------------------------- */
+    .page-break { page-break-before: always; break-before: page; }
+    .keep-together { page-break-inside: avoid; break-inside: avoid; }
+
+    /* ---- Print footer note ------------------------------------------- */
+    .doc-footer {
+        margin-top: 24px;
+        padding-top: 8px;
+        border-top: 1px solid #e2e8f0;
+        font-size: 8pt;
+        color: #94a3b8;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+    <div class="doc-header">
+        <h1>{{ title }}</h1>
+        <div class="meta">
+            <span class="badge">IELTS</span>
+            Generated on {{ generated_on }}
+        </div>
+    </div>
+
+    <div class="content">
+        {{ content | safe }}
+    </div>
+
+    <div class="doc-footer">
+        Generated with IELTS Study Sheet Converter &amp; PDF Generator
+    </div>
+
+</body>
+</html>

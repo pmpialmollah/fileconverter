@@ -1,0 +1,28 @@
+# IELTS Study Sheet Converter & PDF Generator — Python dependencies
+#
+# Install with:
+#   pip install -r requirements.txt
+#
+# NOTE: WeasyPrint requires system-level native libraries (Pango, Cairo,
+# GDK-Pixbuf, fontconfig, harfbuzz) to be installed BEFORE this pip install
+# will work correctly. See SETUP_GUIDE.md for OS-specific instructions.
+
+Flask==3.1.3
+Werkzeug==3.1.3
+
+# Document -> Markdown conversion engine (Microsoft)
+# IMPORTANT: the base `markitdown` package alone can only handle plain
+# text/HTML. The [all] extra pulls in the parsers this app needs for
+# PDF, DOCX, XLSX, XLS, and PPTX support (pdfminer-six, mammoth,
+# python-pptx, openpyxl, pandas, xlrd, lxml, etc.). Do not swap this
+# for the bare `markitdown` package or PDF/Office conversions will fail.
+markitdown[all]==0.1.5
+
+# Markdown -> HTML rendering (with extensions: tables, fenced_code, toc, codehilite)
+Markdown==3.10.2
+
+# HTML -> PDF rendering engine (requires system Pango/Cairo — see SETUP_GUIDE.md)
+weasyprint==69.0
+
+# Production WSGI server (recommended over `flask run` for anything beyond local dev)
+gunicorn==23.0.0
