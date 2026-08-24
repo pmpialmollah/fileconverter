@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IELTS Study Sheet Converter &amp; PDF Generator</title>
+<title>File Converter</title>
 
 <!-- Tailwind CSS via CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -41,8 +41,8 @@
                 IE
             </div>
             <div>
-                <h1 class="text-lg font-bold text-slate-900 leading-tight">IELTS Study Sheet Converter</h1>
-                <p class="text-xs text-slate-500 leading-tight">Document → Markdown &nbsp;|&nbsp; Markdown → PDF Cheat Sheet</p>
+                <h1 class="text-lg font-bold text-slate-900 leading-tight">File Converter</h1>
+                <p class="text-xs text-slate-500 leading-tight">Document → Markdown &nbsp;|&nbsp; Markdown → PDF</p>
             </div>
         </div>
         <span class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
@@ -61,7 +61,7 @@
         </button>
         <button id="tab-btn-b" role="tab" aria-selected="false"
                 class="tab-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all">
-            📝 Markdown → PDF Cheat Sheet
+            📝 Markdown → PDF
         </button>
     </div>
 </div>
@@ -129,14 +129,14 @@
             <p class="text-sm text-slate-500 mb-3">Bengali (বাংলা) and English mixed content is fully supported.</p>
 
             <div class="mb-3">
-                <label class="text-xs font-semibold text-slate-600 block mb-1">Cheat Sheet Title</label>
-                <input id="pdf-title" type="text" value="IELTS Vocabulary Cheat Sheet"
+                <label class="text-xs font-semibold text-slate-600 block mb-1">Document Title</label>
+                <input id="pdf-title" type="text" value="File Converter Document"
                        class="w-full text-sm border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
             </div>
 
             <!-- Paste mode -->
             <div id="paste-container" class="flex-1 flex flex-col">
-                <textarea id="markdown-textarea" rows="14" placeholder="# IELTS Vocabulary&#10;&#10;**Ubiquitous** (adj.) — সর্বব্যাপী&#10;&#10;Synonyms: omnipresent, widespread&#10;&#10;Example: Smartphones are ubiquitous today. — স্মার্টফোন আজ সর্বব্যাপী।"
+                <textarea id="markdown-textarea" rows="14" placeholder="# File Notes&#10;&#10;**Important** — keep this summary useful and clear.&#10;&#10;Example: This file was converted into a clean PDF version."
                     class="flex-1 min-h-[260px] w-full text-sm border border-slate-300 rounded-xl px-3 py-3 font-mono focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"></textarea>
             </div>
 
@@ -155,7 +155,7 @@
 
             <button id="convert-btn-b"
                     class="mt-4 w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 rounded-lg text-sm transition-colors flex items-center justify-center gap-2">
-                <span id="convert-btn-b-label">Generate PDF Cheat Sheet</span>
+                <span id="convert-btn-b-label">Generate PDF</span>
                 <svg id="spinner-b" class="hidden animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -184,7 +184,7 @@
 </main>
 
 <footer class="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-center text-xs text-slate-400">
-    IELTS Study Sheet Converter &amp; PDF Generator — Flask · markitdown · markdown · WeasyPrint
+    File Converter — Flask · markitdown · markdown · WeasyPrint
 </footer>
 
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>

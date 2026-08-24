@@ -1,5 +1,5 @@
 /**
- * IELTS Study Sheet Converter & PDF Generator — Frontend Controller
+ * File Converter — Frontend Controller
  * Handles: tab switching, drag-and-drop uploads, AJAX conversion calls,
  * live preview rendering, and download triggers for both pipelines.
  */
@@ -217,7 +217,7 @@
     convertBtnB.addEventListener("click", async () => {
         hideError(errorB);
 
-        const title = pdfTitleInput.value.trim() || "IELTS Study Sheet";
+        const title = pdfTitleInput.value.trim() || "File Converter";
         const formData = new FormData();
         formData.append("title", title);
 
@@ -260,7 +260,7 @@
             showError(errorB, err.message || "Something went wrong while generating the PDF.");
         } finally {
             convertBtnB.disabled = false;
-            convertBtnBLabel.textContent = "Generate PDF Cheat Sheet";
+            convertBtnBLabel.textContent = "Generate PDF";
             spinnerB.classList.add("hidden");
         }
     });

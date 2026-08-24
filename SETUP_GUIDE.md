@@ -1,5 +1,6 @@
 # Setup & Installation Guide
-## IELTS Study Sheet Converter & PDF Generator
+
+## File Converter
 
 This guide walks through everything needed to run the app locally: system
 dependencies for WeasyPrint, Bengali font setup, the Python environment,
@@ -73,6 +74,7 @@ WeasyPrint on native Windows requires the GTK3 runtime (which bundles
 Pango/Cairo/GDK-Pixbuf). Two supported paths:
 
 **Option A — GTK3 Runtime installer (simplest):**
+
 1. Download the GTK3 runtime installer from the MSYS2/GTK project (search
    "GTK3 runtime Windows installer" — the commonly used one is maintained
    at `gtk-for-windows-runtime-environment-installer` on GitHub releases).
@@ -81,8 +83,9 @@ Pango/Cairo/GDK-Pixbuf). Two supported paths:
 4. Proceed with the normal `pip install -r requirements.txt`.
 
 **Option B — WSL2 (recommended for reliability):**
+
 1. Install WSL2 with an Ubuntu distro: `wsl --install -d Ubuntu`.
-2. Follow the **Ubuntu / Debian Linux** instructions above *inside* WSL2.
+2. Follow the **Ubuntu / Debian Linux** instructions above _inside_ WSL2.
 3. Run the Flask app inside WSL2; it's reachable from Windows at
    `http://localhost:5000` as normal.
 
@@ -142,6 +145,7 @@ If you want the raw `pdf_template.html` to also look correct when opened
 directly in a browser (outside of WeasyPrint), install the fonts system-wide:
 
 **Ubuntu/Debian:**
+
 ```bash
 mkdir -p ~/.local/share/fonts
 cp fonts/*.ttf ~/.local/share/fonts/
@@ -154,6 +158,7 @@ or copy them to `~/Library/Fonts/`.
 **Windows:** right-click each `.ttf` file → "Install".
 
 Verify Linux font registration:
+
 ```bash
 fc-list | grep -i "noto sans bengali"
 ```
@@ -187,9 +192,11 @@ python3 -c "import weasyprint; print('WeasyPrint OK:', weasyprint.__version__)"
 ```
 
 If this fails with something like:
+
 ```
 OSError: cannot load library 'libgobject-2.0-0': ...
 ```
+
 it means step 2 (system dependencies) was skipped or the libraries aren't
 on your library search path. Revisit section 2 for your OS.
 
@@ -213,17 +220,18 @@ python3 app.py
 ```
 
 By default this starts the Flask development server on:
+
 ```
 http://127.0.0.1:5000
 ```
 
 Open that URL in your browser. You should see the dual-tab interface —
-**"Document → Markdown"** and **"Markdown → PDF Cheat Sheet"**.
+**"Document → Markdown"** and **"Markdown → PDF"**.
 
 ### Environment variables
 
-| Variable      | Default | Purpose                                          |
-|---------------|---------|---------------------------------------------------|
+| Variable      | Default | Purpose                                           |
+| ------------- | ------- | ------------------------------------------------- |
 | `FLASK_DEBUG` | `1`     | Set to `0` to disable Flask debug mode/tracebacks |
 
 ```bash
@@ -256,6 +264,7 @@ After starting the server, verify both pipelines work end-to-end:
    it's valid UTF-8.
 
 2. **Tab B (Markdown → PDF):** Paste this into the textarea:
+
    ```markdown
    # Test Sheet
 
@@ -263,12 +272,13 @@ After starting the server, verify both pipelines work end-to-end:
 
    Synonyms: omnipresent, widespread
 
-   | Word | Bengali |
-   |------|---------|
+   | Word      | Bengali      |
+   | --------- | ------------ |
    | Resilient | স্থিতিস্থাপক |
    ```
-   Click "Generate PDF Cheat Sheet". The preview pane should show a styled
-   PDF with the Bengali text rendered as connected script (conjuncts like
+
+   Click "Generate PDF". The preview pane should show a styled PDF with the
+   Bengali text rendered as connected script (conjuncts like
    ব্য, স্থ should look like single joined glyphs, not separate broken
    pieces or empty boxes). Click "Download PDF" to confirm the file saves
    correctly.
@@ -277,22 +287,22 @@ After starting the server, verify both pipelines work end-to-end:
 
 ## 7. Common troubleshooting
 
-| Symptom | Likely cause | Fix |
-|---|---|---|
-| `OSError: cannot load library 'libgobject-2.0-0'` on `import weasyprint` | System deps (Pango/Cairo/GDK-Pixbuf) not installed | Revisit section 2 for your OS |
-| Bengali text shows as empty boxes (☐☐☐) in the PDF | Font files missing from `fonts/` or `@font-face` `src` path wrong | Confirm `fonts/*.ttf` exist; check the `fonts_dir` path passed into `pdf_template.html` resolves correctly (it's derived from `BASE_DIR` in `app.py` — don't move `app.py` without updating relative paths) |
-| Bengali conjuncts look "broken apart" (e.g. ক্ষ renders as ক + ্ + ষ visibly separate) | Using a font without proper Bengali OpenType shaping tables, or a variable font Pango can't shape correctly | Use the bundled static Noto Sans Bengali instances; avoid raw variable-font `.ttf` files for body text |
-| `markitdown` conversion fails on `.pptx`/`.xlsx`/`.docx` with `ImportError` | Installed bare `markitdown` instead of `markitdown[all]` | `pip install "markitdown[all]==0.1.5"` |
-| Upload succeeds but Markdown preview is empty | Source file is image-only/scanned (no extractable text layer) | Expected — MarkItDown does not perform OCR by default; the app returns a clear error message in this case |
-| `413 Request Entity Too Large` | File exceeds the 25 MB upload cap | Increase `MAX_CONTENT_LENGTH` in `app.py` if you need larger uploads |
-| PDF generates but layout looks squeezed/overlapping on some machines | A parent OS is substituting Bengali fallback glyphs incorrectly on a *browser* preview of the raw HTML (not through WeasyPrint) | This only affects browser preview of the raw template, not the actual WeasyPrint-rendered PDF; install fonts system-wide per section 3 if you need browser parity |
+| Symptom                                                                                | Likely cause                                                                                                                    | Fix                                                                                                                                                                                                         |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `OSError: cannot load library 'libgobject-2.0-0'` on `import weasyprint`               | System deps (Pango/Cairo/GDK-Pixbuf) not installed                                                                              | Revisit section 2 for your OS                                                                                                                                                                               |
+| Bengali text shows as empty boxes (☐☐☐) in the PDF                                     | Font files missing from `fonts/` or `@font-face` `src` path wrong                                                               | Confirm `fonts/*.ttf` exist; check the `fonts_dir` path passed into `pdf_template.html` resolves correctly (it's derived from `BASE_DIR` in `app.py` — don't move `app.py` without updating relative paths) |
+| Bengali conjuncts look "broken apart" (e.g. ক্ষ renders as ক + ্ + ষ visibly separate) | Using a font without proper Bengali OpenType shaping tables, or a variable font Pango can't shape correctly                     | Use the bundled static Noto Sans Bengali instances; avoid raw variable-font `.ttf` files for body text                                                                                                      |
+| `markitdown` conversion fails on `.pptx`/`.xlsx`/`.docx` with `ImportError`            | Installed bare `markitdown` instead of `markitdown[all]`                                                                        | `pip install "markitdown[all]==0.1.5"`                                                                                                                                                                      |
+| Upload succeeds but Markdown preview is empty                                          | Source file is image-only/scanned (no extractable text layer)                                                                   | Expected — MarkItDown does not perform OCR by default; the app returns a clear error message in this case                                                                                                   |
+| `413 Request Entity Too Large`                                                         | File exceeds the 25 MB upload cap                                                                                               | Increase `MAX_CONTENT_LENGTH` in `app.py` if you need larger uploads                                                                                                                                        |
+| PDF generates but layout looks squeezed/overlapping on some machines                   | A parent OS is substituting Bengali fallback glyphs incorrectly on a _browser_ preview of the raw HTML (not through WeasyPrint) | This only affects browser preview of the raw template, not the actual WeasyPrint-rendered PDF; install fonts system-wide per section 3 if you need browser parity                                           |
 
 ---
 
 ## 8. Project structure reference
 
 ```
-ielts-converter/
+file-converter/
 ├── app.py                       # Flask app: routes, conversion pipelines, error handling
 ├── requirements.txt             # Pinned Python dependencies
 ├── SETUP_GUIDE.md               # This file
@@ -303,7 +313,7 @@ ielts-converter/
 │   └── NotoSansBengali-Static-Bold.ttf
 ├── templates/
 │   ├── index.html               # Dual-tab UI (drag-drop, AJAX, live preview)
-│   └── pdf_template.html        # WeasyPrint-rendered cheat sheet HTML/CSS
+│   └── pdf_template.html        # WeasyPrint-rendered document HTML/CSS
 ├── static/
 │   ├── css/
 │   │   └── style.css            # Supplementary styles beyond Tailwind CDN utilities

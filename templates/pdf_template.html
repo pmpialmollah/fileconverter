@@ -5,7 +5,7 @@
 <title>{{ title }}</title>
 <style>
     /* ==========================================================
-       IELTS CHEAT SHEET — PRINT STYLESHEET
+       FILE CONVERTER — PRINT STYLESHEET
        Bilingual (English + বাংলা) typography engine for WeasyPrint
        ========================================================== */
 
@@ -71,7 +71,7 @@
             color: #94a3b8;
         }
         @top-right {
-            content: "IELTS Study Sheet";
+            content: "File Converter";
             font-family: 'Noto Sans', sans-serif;
             font-size: 8pt;
             color: #cbd5e1;
@@ -248,7 +248,7 @@
     }
     tbody tr:nth-child(even) { background: #f8fafc; }
 
-    /* ---- Code blocks (rare in IELTS sheets, but supported) --------- */
+    /* ---- Code blocks (rare in document layouts, but supported) --------- */
     code {
         font-family: 'DejaVu Sans Mono', 'Courier New', monospace;
         background: #f1f5f9;
@@ -319,7 +319,7 @@
     <div class="doc-header">
         <h1>{{ title }}</h1>
         <div class="meta">
-            <span class="badge">IELTS</span>
+            <span class="badge">FILE</span>
             Generated on {{ generated_on }}
         </div>
     </div>
@@ -329,7 +329,7 @@
     </div>
 
     <div class="doc-footer">
-        Generated with IELTS Study Sheet Converter &amp; PDF Generator
+        Generated with File Converter
     </div>
 
 </body>

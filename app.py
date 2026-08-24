@@ -1,12 +1,12 @@
 """
-IELTS Study Sheet Converter & PDF Generator
-=============================================
+File Converter
+==============
 A Flask web application with two independent pipelines:
 
   Pipeline A: Any document (PDF/DOCX/XLSX/PPTX/HTML/TXT) -> clean Markdown
               via Microsoft's `markitdown` library.
 
-  Pipeline B: Markdown -> beautifully styled, print-ready PDF cheat sheet
+  Pipeline B: Markdown -> beautifully styled, print-ready PDF document
               via `markdown` (HTML rendering) + `weasyprint` (PDF rendering),
               with full Bengali (বাংলা) + English bilingual typography support.
 
@@ -52,7 +52,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
-logger = logging.getLogger("ielts_converter")
+logger = logging.getLogger("file_converter")
 
 # Allowed input extensions for Pipeline A (Document -> Markdown)
 ALLOWED_DOC_EXTENSIONS = {
@@ -99,7 +99,7 @@ def cleanup_file(path: str) -> None:
         logger.warning("Failed to clean up temp file %s: %s", path, exc)
 
 
-def build_cheat_sheet_html(markdown_text: str, title: str = "IELTS Study Sheet") -> str:
+def build_cheat_sheet_html(markdown_text: str, title: str = "File Converter") -> str:
     """
     Convert raw Markdown text into a full, styled HTML document ready for
     WeasyPrint rendering. Wraps the markdown-generated HTML fragment inside
@@ -139,7 +139,7 @@ def build_cheat_sheet_html(markdown_text: str, title: str = "IELTS Study Sheet")
     return rendered
 
 
-def markdown_to_pdf_bytes(markdown_text: str, title: str = "IELTS Study Sheet") -> bytes:
+def markdown_to_pdf_bytes(markdown_text: str, title: str = "File Converter") -> bytes:
     """Run the full Markdown -> HTML -> PDF pipeline and return PDF bytes."""
     html_string = build_cheat_sheet_html(markdown_text, title=title)
     # base_url lets WeasyPrint resolve any relative file:// font/asset paths
@@ -264,7 +264,7 @@ def convert_to_pdf():
     at /download/<token>.
     """
     markdown_text = None
-    title = "IELTS Study Sheet"
+    title = "File Converter"
     temp_input_path = None
 
     try:
@@ -318,7 +318,7 @@ def convert_to_pdf():
         with open(output_path, "wb") as f:
             f.write(pdf_bytes)
 
-        safe_title = secure_filename(title) or "IELTS_Study_Sheet"
+        safe_title = secure_filename(title) or "File_Converter"
 
         return jsonify(
             success=True,
