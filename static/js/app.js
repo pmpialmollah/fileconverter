@@ -46,6 +46,23 @@
         return `${bytes.toFixed(1)} ${units[i]}`;
     }
 
+    function startConversionStatus(labelEl, steps) {
+        let stepIndex = 0;
+        const timers = [];
+
+        const showNextStep = () => {
+            labelEl.textContent = steps[stepIndex];
+            stepIndex = Math.min(stepIndex + 1, steps.length - 1);
+        };
+
+        showNextStep();
+        steps.slice(1).forEach((_, index) => {
+            timers.push(setTimeout(showNextStep, (index + 1) * 1200));
+        });
+
+        return () => timers.forEach((timer) => clearTimeout(timer));
+    }
+
     async function readApiResponse(response) {
         const body = await response.text();
         let data;
@@ -137,7 +154,13 @@
 
         hideError(errorA);
         convertBtnA.disabled = true;
-        convertBtnALabel.textContent = "Converting…";
+        const stopConversionStatus = startConversionStatus(convertBtnALabel, [
+            "Uploading document…",
+            "Reading document…",
+            "Extracting content…",
+            "Building Markdown…",
+            "Finishing conversion…",
+        ]);
         spinnerA.classList.remove("hidden");
         copyBtnA.disabled = true;
         downloadBtnA.disabled = true;
@@ -157,6 +180,7 @@
             showError(errorA, err.message || "Something went wrong during conversion.");
             previewA.textContent = "Converted Markdown will appear here…";
         } finally {
+            stopConversionStatus();
             convertBtnA.disabled = false;
             convertBtnALabel.textContent = "Convert to Markdown";
             spinnerA.classList.add("hidden");
