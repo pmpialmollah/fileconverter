@@ -95,7 +95,6 @@
         font-size: 10.5pt;
         line-height: 1.65;
         color: #1e293b;
-        -weasy-text-rendering: optimizeLegibility;
     }
 
     /* Ensure any element can independently fall back to Bengali glyphs
@@ -248,7 +247,7 @@
     }
     tbody tr:nth-child(even) { background: #f8fafc; }
 
-    /* ---- Code blocks (rare in document layouts, but supported) --------- */
+    /* ---- Code blocks (supported for converted documents) ------------ */
     code {
         font-family: 'DejaVu Sans Mono', 'Courier New', monospace;
         background: #f1f5f9;
@@ -262,7 +261,6 @@
         color: #e2e8f0;
         padding: 10px 12px;
         border-radius: 5px;
-        overflow-x: auto;
         font-size: 8.5pt;
         page-break-inside: avoid;
     }
@@ -319,7 +317,7 @@
     <div class="doc-header">
         <h1>{{ title }}</h1>
         <div class="meta">
-            <span class="badge">FILE</span>
+            <span class="badge">FILE CONVERTER</span>
             Generated on {{ generated_on }}
         </div>
     </div>

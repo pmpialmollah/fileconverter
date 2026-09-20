@@ -318,7 +318,7 @@ def convert_to_pdf():
         with open(output_path, "wb") as f:
             f.write(pdf_bytes)
 
-        safe_title = secure_filename(title) or "File_Converter"
+        safe_title = secure_filename(title) or "Converted_Document"
 
         return jsonify(
             success=True,
@@ -381,6 +381,22 @@ def not_found(_exc):
     if request.path.startswith(("/convert-to-md", "/convert-to-pdf", "/download")):
         return jsonify(success=False, error="Endpoint not found."), 404
     return render_template("index.html"), 200
+
+
+@app.errorhandler(405)
+def method_not_allowed(_exc):
+    if request.path.startswith(("/convert-to-md", "/convert-to-pdf", "/download")):
+        return jsonify(success=False, error="HTTP method is not allowed for this endpoint."), 405
+    return jsonify(success=False, error="HTTP method is not allowed."), 405
+
+
+@app.errorhandler(Exception)
+def unhandled_exception(exc):
+    """Keep API failures JSON even when Flask debug propagation is enabled."""
+    logger.error("Unhandled application error: %s\n%s", exc, traceback.format_exc())
+    if request.path.startswith(("/convert-to-md", "/convert-to-pdf", "/download")):
+        return jsonify(success=False, error="An unexpected server error occurred."), 500
+    raise exc
 
 
 @app.errorhandler(500)

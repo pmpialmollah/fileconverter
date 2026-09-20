@@ -46,6 +46,27 @@
         return `${bytes.toFixed(1)} ${units[i]}`;
     }
 
+    async function readApiResponse(response) {
+        const body = await response.text();
+        let data;
+
+        try {
+            data = body ? JSON.parse(body) : {};
+        } catch (_err) {
+            const looksLikeHtml = /^\s*</.test(body);
+            const detail = looksLikeHtml
+                ? "The server returned an HTML error page instead of JSON."
+                : "The server returned an invalid response.";
+            throw new Error(`${detail} (HTTP ${response.status})`);
+        }
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || `Server returned status ${response.status}`);
+        }
+
+        return data;
+    }
+
     function setupDropzone(dropzoneEl, inputEl, onFileSelected) {
         dropzoneEl.addEventListener("click", () => inputEl.click());
 
@@ -126,11 +147,7 @@
 
         try {
             const res = await fetch("/convert-to-md", { method: "POST", body: formData });
-            const data = await res.json();
-
-            if (!res.ok || !data.success) {
-                throw new Error(data.error || `Server returned status ${res.status}`);
-            }
+            const data = await readApiResponse(res);
 
             previewA.textContent = data.markdown;
             lastMdDownload = { token: data.download_token, filename: data.filename };
@@ -217,7 +234,7 @@
     convertBtnB.addEventListener("click", async () => {
         hideError(errorB);
 
-        const title = pdfTitleInput.value.trim() || "File Converter";
+        const title = pdfTitleInput.value.trim() || "Converted Document";
         const formData = new FormData();
         formData.append("title", title);
 
@@ -243,11 +260,7 @@
 
         try {
             const res = await fetch("/convert-to-pdf", { method: "POST", body: formData });
-            const data = await res.json();
-
-            if (!res.ok || !data.success) {
-                throw new Error(data.error || `Server returned status ${res.status}`);
-            }
+            const data = await readApiResponse(res);
 
             lastPdfDownload = { token: data.download_token, filename: data.filename };
 

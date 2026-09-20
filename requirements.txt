@@ -1,4 +1,4 @@
-# IELTS Study Sheet Converter & PDF Generator — Python dependencies
+# File Converter — Python dependencies
 #
 # Install with:
 #   pip install -r requirements.txt
